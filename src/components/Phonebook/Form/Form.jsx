@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContactsThunk, addContactsThunk } from 'redux/contactsAsyncThunk';
+import { selectContacts } from 'redux/selectors';
 import { FormEl, FormLable, FormInput, FormBtn } from './Form.styled';
 
 const Form = () => {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-  const contacts = useSelector(state => state.contacts.items);
+  const [phone, setPhone] = useState('');
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,8 +22,8 @@ const Form = () => {
         setName(value);
         break;
 
-      case 'number':
-        setNumber(value);
+      case 'phone':
+        setPhone(value);
         break;
 
       default:
@@ -47,8 +47,7 @@ const Form = () => {
     e.preventDefault();
     const contact = {
       name,
-      number,
-      id: nanoid(),
+      phone,
     };
     onAddedContact(contact);
     resetForm();
@@ -56,7 +55,7 @@ const Form = () => {
 
   const resetForm = () => {
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (
@@ -77,11 +76,11 @@ const Form = () => {
         Number
         <FormInput
           type="tel"
-          name="number"
+          name="phone"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          value={number}
+          value={phone}
           onChange={handleChange}
         />
       </FormLable>
