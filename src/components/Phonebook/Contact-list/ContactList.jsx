@@ -1,7 +1,7 @@
 import React from 'react';
 import { Notification } from '../Notification/Notification';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeContact } from 'redux/contactsSlice';
+import { deleteContactsThunk } from 'redux/contactsAsyncThunk';
 import { selectVisibleContacts } from 'redux/selectors';
 import {
   Contacts,
@@ -15,7 +15,7 @@ function ContactList() {
   const visibleContacts = useSelector(selectVisibleContacts)
 
   const onContactRemoving = id => {
-    dispatch(removeContact(id));
+    dispatch(deleteContactsThunk(id));
   };
 
   return visibleContacts.length > 0 ? (
@@ -23,7 +23,7 @@ function ContactList() {
       {visibleContacts.map(contact => (
         <Contact key={contact.id}>
           <ContactName>{contact.name}:</ContactName>
-          <p>{contact.number}</p>
+          <p>{contact.phone}</p>
           <ContactBtnDelete onClick={() => onContactRemoving(contact.id)}>
             Delete
           </ContactBtnDelete>

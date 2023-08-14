@@ -1,14 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+import { getContactsThunk, addContactsThunk } from 'redux/contactsAsyncThunk';
 import { FormEl, FormLable, FormInput, FormBtn } from './Form.styled';
 
 const Form = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const contacts = useSelector(state => state.contacts.contacts);
+  const contacts = useSelector(state => state.contacts.items);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getContactsThunk());
+  }, [dispatch]);
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -28,11 +32,15 @@ const Form = () => {
   };
 
   const onAddedContact = data => {
-    if (contacts.find(contact => contact.name.toLowerCase() === data.name.toLowerCase())) {
+    if (
+      contacts.find(
+        contact => contact.name.toLowerCase() === data.name.toLowerCase()
+      )
+    ) {
       alert(`${data.name} is already in contacts`);
       return;
     }
-    dispatch(addContact(data));
+    dispatch(addContactsThunk(data));
   };
 
   const handleSubmit = e => {

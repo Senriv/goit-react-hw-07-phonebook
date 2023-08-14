@@ -11,8 +11,8 @@ function Phonebook() {
         <Form />
       </Section>
       <Section title="Contacts">
-        <Filter></Filter>
-        <ContactList></ContactList>
+        <Filter/>
+        <ContactList/>
       </Section>
     </SectionContainer>
   );
