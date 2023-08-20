@@ -2,18 +2,25 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContactsThunk, addContactsThunk } from 'redux/contactsAsyncThunk';
 import { selectContacts } from 'redux/selectors';
-import { FormEl, FormLable, FormInput, FormBtn } from './Form.styled';
+import { FormEl, FormLabel, FormInput, FormBtn } from './Form.styled';
 
 const Form = () => {
+  // Локальное состояние для имени и номера телефона
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+
+  // Получение списка контактов из хранилища
   const contacts = useSelector(selectContacts);
+
+  // Получение функции dispatch из хука useDispatch
   const dispatch = useDispatch();
 
+  // Загрузка списка контактов после монтирования компонента
   useEffect(() => {
     dispatch(getContactsThunk());
   }, [dispatch]);
 
+  // Обработчик изменения полей ввода
   const handleChange = e => {
     const { name, value } = e.currentTarget;
 
@@ -31,7 +38,9 @@ const Form = () => {
     }
   };
 
+  // Обработчик добавления нового контакта
   const onAddedContact = data => {
+    // Проверка на существующий контакт с таким же именем
     if (
       contacts.find(
         contact => contact.name.toLowerCase() === data.name.toLowerCase()
@@ -40,9 +49,10 @@ const Form = () => {
       alert(`${data.name} is already in contacts`);
       return;
     }
-    dispatch(addContactsThunk(data));
+    dispatch(addContactsThunk(data)); // Вызов Thunk-действия для добавления контакта
   };
 
+  // Обработчик отправки формы
   const handleSubmit = e => {
     e.preventDefault();
     const contact = {
@@ -53,6 +63,7 @@ const Form = () => {
     resetForm();
   };
 
+  // Сброс значений полей ввода
   const resetForm = () => {
     setName('');
     setPhone('');
@@ -60,7 +71,7 @@ const Form = () => {
 
   return (
     <FormEl onSubmit={handleSubmit}>
-      <FormLable>
+      <FormLabel>
         Name
         <FormInput
           type="text"
@@ -71,8 +82,8 @@ const Form = () => {
           value={name}
           onChange={handleChange}
         />
-      </FormLable>
-      <FormLable>
+      </FormLabel>
+      <FormLabel>
         Number
         <FormInput
           type="tel"
@@ -83,7 +94,7 @@ const Form = () => {
           value={phone}
           onChange={handleChange}
         />
-      </FormLable>
+      </FormLabel>
       <FormBtn type="submit">Add contact</FormBtn>
     </FormEl>
   );

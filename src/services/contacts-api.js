@@ -1,22 +1,23 @@
-import axios from "axios";
+// Импорт базового URL из файла apiConfig.js
+import { BASE_URL } from "./apiConfig";
 
-const BASEURL = 'https://64d914bfe947d30a2609e4f0.mockapi.io';
-
-export const contactAPI = axios.create({
-    BASEURL,
-});
-
+// Функция для получения контактов
 export const getContacts = async () => {
-  const { data } = await contactAPI.get(`${BASEURL}/contacts`);
-  return data;
+  // Выполняем GET-запрос для получения списка контактов
+  const { data } = await BASE_URL.get(`/contacts`);
+  return data; // Возвращаем данные контактов
 };
 
+// Функция для добавления нового контакта
 export const addContacts = async contact => {
-  const { data } = await contactAPI.post(`${BASEURL}/contacts`, contact);
-  return data;
+  // Выполняем POST-запрос для добавления нового контакта
+  const { data } = await BASE_URL.post(`/contacts`, contact);
+  return data; // Возвращаем данные нового контакта после добавления
 };
 
+// Функция для удаления контакта по его ID
 export const deleteContacts = async id => {
-  const { data } = await contactAPI.delete(`${BASEURL}/contacts/${id}`);
-  return data;
+  // Выполняем DELETE-запрос для удаления контакта с указанным ID
+  const { data } = await BASE_URL.delete(`/contacts/${id}`);
+  return data; // Возвращаем данные, которые могут подтвердить успешное удаление
 };

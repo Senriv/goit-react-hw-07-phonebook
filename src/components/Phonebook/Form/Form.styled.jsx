@@ -6,7 +6,7 @@ export const FormEl = styled.form`
   align-items: center;
 `;
 
-export const FormLable = styled.label`
+export const FormLabel = styled.label`
   margin-right: 10px;
 `;
 
